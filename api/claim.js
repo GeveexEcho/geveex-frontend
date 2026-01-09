@@ -15,7 +15,9 @@ export default async function handler(req, res) {
 
   const secret = process.env.WALLET_SECRET;
   if (!secret) {
-    return res.status(500).json({ error: 'Server configuration error' });
+    return res.status(500).json({ error: 'WALLET_SECRET is missing in Vercel settings' });
+  } else {
+    console.log("Wallet secret is loaded successfully.");
   }
 
   let payer;
@@ -25,7 +27,7 @@ export default async function handler(req, res) {
     try {
       payer = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(secret)));
     } catch (e) {
-      return res.status(500).json({ error: 'Invalid wallet secret' });
+      return res.status(500).json({ error: 'Invalid wallet secret format' });
     }
   }
 
@@ -91,16 +93,16 @@ export default async function handler(req, res) {
       )
     );
 
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
-    tx.recentBlockhash = blockhash;
+    const latestBlockhash = await connection.getLatestBlockhash();
+    tx.recentBlockhash = latestBlockhash.blockhash;
     tx.feePayer = payer.publicKey;
 
     const signature = await connection.sendTransaction(tx, [payer]);
     
     await connection.confirmTransaction({
         signature,
-        blockhash,
-        lastValidBlockHeight
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
     }, "confirmed");
 
     return res.status(200).json({ 
@@ -114,5 +116,4 @@ export default async function handler(req, res) {
       error: err.message 
     });
   }
-          }
-      
+}
