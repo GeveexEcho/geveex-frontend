@@ -1,18 +1,19 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/admin",
       "destination": "/admin.html"
-    }
-  ]
-}
-{
-  "rewrites": [
+    },
     {
       "source": "/api/claim",
       "destination": "/api/claim.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
