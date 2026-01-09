@@ -29,10 +29,8 @@ document.getElementById('connect-wallet').onclick = async () => {
 function enableClaimIfReady() {
   const taskButtons = document.querySelectorAll('[id^="btn-task-"]');
   const allVerified = Array.from(taskButtons).every(btn => btn.getAttribute('data-state') === 'verified');
-  
   const provider = window.solana || window.solflare;
   const isWalletConnected = provider && provider.isConnected;
-
   if (allVerified && isWalletConnected) {
     claimButton.disabled = false;
   }
@@ -44,7 +42,7 @@ claimButton.onclick = async () => {
   claimButton.disabled = true;
 
   try {
-    const response = await fetch('/.netlify/functions/claim', {
+    const response = await fetch('/api/claim', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pubkey: wallet.publicKey.toBase58() })
@@ -52,14 +50,11 @@ claimButton.onclick = async () => {
     const data = await response.json();
     if (data.success) {
       status.innerHTML = `Success! Your NFT minted: <a href="https://explorer.solana.com/address/${data.mint}?cluster=devnet" target="_blank" class="text-cyan-400 underline">${data.mint.slice(0,8)}...</a>`;
-      
       saveClaimData(wallet.publicKey.toBase58(), data.mint);
-      
       const claimedSection = document.getElementById('user-claimed');
       if (claimedSection) claimedSection.style.display = 'block';
-      
       const infoDisplay = document.getElementById('claimed-info');
-      if (infoDisplay) infoDisplay.textContent = 'You have claimed your unique Early Bird NFT (TESTNET ONLY – NO MAINNET VALUE)';
+      if (infoDisplay) infoDisplay.textContent = 'You have claimed your unique Early Bird NFT (TESTNET ONLY)';
     } else {
       status.textContent = data.error || 'Claim failed';
       claimButton.disabled = false;
