@@ -44,7 +44,7 @@ if (connectBtn) {
 document.querySelectorAll('[id^="btn-task-"]').forEach(btn => {
     btn.onclick = () => {
         const state = btn.getAttribute('data-state');
-        const link = btn.getAttribute('data-link');
+        const link = btn.getAttribute('data-link') || btn.getAttribute('onclick')?.match(/'([^']+)'/)[1];
 
         if (state === 'open') {
             window.open(link, '_blank');
@@ -83,6 +83,7 @@ function checkEligibility() {
     }
 }
 
+// Fixed Claim Logic with proper JSON Error handling
 claimButton.onclick = async () => {
     if (!wallet) return;
     statusDisplay.textContent = 'Claiming your unique NFT...';
@@ -94,19 +95,31 @@ claimButton.onclick = async () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ pubkey: wallet.publicKey.toBase58() })
         });
+
+        // চেক করা হচ্ছে রেসপন্সটি JSON কি না
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            const rawText = await response.text();
+            throw new Error("Server returned non-JSON response. Check if /api/claim is correct.");
+        }
+
         const data = await response.json();
         if (data.success) {
             statusDisplay.innerHTML = `Success! Your NFT minted: <a href="https://explorer.solana.com/address/${data.mint}?cluster=devnet" target="_blank" class="text-cyan-400 underline">${data.mint.slice(0,8)}...</a>`;
             saveClaimData(wallet.publicKey.toBase58(), data.mint);
-            document.getElementById('user-claimed').style.display = 'block';
-            document.getElementById('claimed-info').textContent = 'You have claimed your unique Early Bird NFT (TESTNET ONLY)';
+            
+            const claimedSection = document.getElementById('user-claimed');
+            if(claimedSection) claimedSection.style.display = 'block';
+            
+            const claimedInfo = document.getElementById('claimed-info');
+            if(claimedInfo) claimedInfo.textContent = 'You have claimed your unique Early Bird NFT (TESTNET ONLY)';
         } else {
             statusDisplay.textContent = data.error || 'Claim failed';
             claimButton.disabled = false;
         }
     } catch (err) {
+        console.error("Detailed Error:", err);
         statusDisplay.textContent = 'Error: ' + err.message;
         claimButton.disabled = false;
     }
 };
-        
