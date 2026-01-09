@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Geveex Echo - Claim Early Bird NFT (Devnet)</title>
-  <!-- Tailwind CSS CDN -->
+  <title>Geveex - Claim Early Bird NFT (Devnet)</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            neon: '#00f0ff',      // Cyan neon
+            neon: '#00f0ff',
             indigo: '#6366f1',
             purple: '#a78bfa',
             violet: '#7c3aed',
-            glass: 'rgba(30, 41, 59, 0.45)',
+            glass: 'rgba(15, 23, 42, 0.65)',
           },
           animation: {
             'slow-zoom': 'slowZoom 20s infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           },
           keyframes: {
             slowZoom: {
@@ -28,164 +30,333 @@
             }
           },
           boxShadow: {
-            'neon-glow': '0 0 25px rgba(0, 240, 255, 0.4)',
-            'purple-glow': '0 0 25px rgba(167, 139, 250, 0.4)',
+            'neon-glow': '0 0 20px rgba(0, 240, 255, 0.3)',
+            'purple-glow': '0 0 20px rgba(167, 139, 250, 0.3)',
           }
         }
       }
     }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', system-ui, sans-serif; background: #0f0f1a; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #050505; }
+    /* Improved Glassmorphism */
     .glass { 
-      background: rgba(30, 41, 59, 0.45); 
-      backdrop-filter: blur(16px); 
+      background: rgba(20, 20, 35, 0.6); 
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 1.5rem; 
-      border: 1px solid rgba(99, 102, 241, 0.3); 
+      border: 1px solid rgba(255, 255, 255, 0.08); 
+    }
+    .glass:hover {
+      background: rgba(30, 30, 50, 0.7);
+      border: 1px solid rgba(99, 102, 241, 0.4);
     }
   </style>
 </head>
-<body class="text-gray-100 min-h-screen bg-gradient-to-br from-gray-950 via-indigo-950/50 to-purple-950/30">
+<body class="text-gray-100 min-h-screen bg-[url('https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/bg-stars.png')] bg-fixed bg-cover selection:bg-cyan-500 selection:text-white">
 
-  <!-- Top Bar -->
-  <nav class="bg-gray-900/60 backdrop-blur-xl border-b border-indigo-900/40 sticky top-0 z-50">
+  <nav class="bg-black/40 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Left: Logo + Name -->
-        <div class="flex items-center space-x-3">
-          <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/logo.png" 
-               alt="Logo" class="h-10 w-10 rounded-full ring-2 ring-purple-500/50"/>
-          <span class="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-purple-400">Geveex Echo</span>
+      <div class="flex items-center justify-between h-20">
+        <div class="flex items-center space-x-3 group cursor-pointer">
+          <div class="relative">
+             <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/logo.png" 
+               alt="Logo" class="h-11 w-11 rounded-full ring-2 ring-purple-500/50 group-hover:ring-cyan-400 transition duration-300"/>
+             <div class="absolute inset-0 rounded-full bg-cyan-400 opacity-0 group-hover:opacity-20 blur-md transition duration-300"></div>
+          </div>
+          <span class="font-extrabold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-indigo-400 group-hover:from-cyan-300 group-hover:to-purple-400 transition duration-300">
+            Geveex.
+          </span>
         </div>
 
-        <!-- Middle: Solana Explorer -->
         <a href="https://explorer.solana.com/address/BrD94HQqSdY69azodByzaA85JcXw1jHSQzh6ujJn6sG5?cluster=devnet" 
-           target="_blank" class="hidden md:block text-cyan-400 hover:text-cyan-300 font-medium transition">
-          Solana Explorer
+           target="_blank" class="hidden lg:flex items-center gap-2 text-sm text-gray-400 hover:text-cyan-300 font-medium transition py-2 px-4 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10">
+           <span>Contract on Explorer</span>
+           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
         </a>
 
-        <!-- Right: Socials + Wallet Connect -->
-        <div class="flex items-center space-x-6">
-          <div class="flex space-x-4">
-            <a href="https://x.com/Geveex_echo" target="_blank" class="text-indigo-300 hover:text-white transition transform hover:scale-110">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>
+        <div class="flex items-center space-x-4 md:space-x-6">
+          <div class="flex space-x-3 md:space-x-4">
+            <a href="https://x.com/Geveex_echo" target="_blank" class="text-gray-400 hover:text-white transition transform hover:scale-110 p-2 hover:bg-white/10 rounded-full">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>
             </a>
-            <a href="https://t.me/Geveex_echo" target="_blank" class="text-indigo-300 hover:text-white transition transform hover:scale-110">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.896 16.312c-.164.468-.51.84-.972.96l-4.5 1.5c-.3.1-.6 0-.8-.2l-3-3c-.2-.2-.3-.5-.2-.8l1.5-4.5c.12-.462.492-.808.96-.972l4.5-1.5c.3-.1.6 0 .8.2l3 3c.2.2.3.5.2.8l-1.5 4.5z"/></svg>
+            <a href="https://t.me/Geveex_echo" target="_blank" class="text-gray-400 hover:text-cyan-400 transition transform hover:scale-110 p-2 hover:bg-white/10 rounded-full">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.694 0V0h.694zm5.8 8.636c-.1.972-.756 6.64-1.076 8.084-.136.616-.48.772-.8.8-.704.06-1.236-.464-1.916-.908-1.064-.696-1.668-1.128-2.704-1.812-1.2-.792-.424-1.228.264-1.94l.016-.016c.452-.58 2.276-2.908 2.316-3.156.004-.028.008-.132-.048-.188-.056-.056-.14-.036-.2-.024-.084.016-1.424.908-4.024 2.664-.38.26-.724.388-1.032.38-.34-.008-.992-.192-1.476-.352-.596-.192-1.068-.292-1.028-.616.02-.172.26-.348.684-.528 2.676-1.164 4.46-1.932 5.344-2.3 2.528-1.052 3.056-1.236 3.4-1.236.076 0 .248.016.36.108.096.08.12.188.132.264.016.124.032.284.02.436z"/>
+              </svg>
             </a>
-            <a href="https://github.com/GeveexEcho" target="_blank" class="text-indigo-300 hover:text-white transition transform hover:scale-110">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.005.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <a href="https://github.com/GeveexEcho" target="_blank" class="text-gray-400 hover:text-white transition transform hover:scale-110 p-2 hover:bg-white/10 rounded-full">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.005.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
             </a>
           </div>
-          <button id="connect-wallet" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-5 py-2 rounded-lg font-semibold shadow-neon-glow transition">
-            Connect Wallet
+          
+          <button id="connect-wallet-btn" onclick="connectWallet()" class="group relative px-6 py-2.5 rounded-xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-lg shadow-indigo-500/30 transition-all duration-200 active:scale-95">
+            <span class="flex items-center gap-2">
+              <span id="wallet-text">Connect Wallet</span>
+              <svg id="wallet-icon" class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            </span>
           </button>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Banner with Slow Zoom -->
-  <div class="relative overflow-hidden h-96 md:h-[500px]">
+  <div class="relative overflow-hidden h-64 md:h-[420px] w-full border-b border-white/5">
     <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/banner.png" 
-         alt="Banner" class="w-full h-full object-cover animate-slow-zoom brightness-75"/>
-    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-center justify-center">
-      <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-2xl animate-pulse-slow">
-        Claim Your Early Bird NFT
-      </h1>
-    </div>
+         alt="Banner" class="w-full h-full object-cover animate-slow-zoom brightness-90"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent"></div>
   </div>
 
-  <!-- About Section - Neon Glass -->
-  <section class="py-20 px-4">
-    <div class="max-w-5xl mx-auto glass p-10 md:p-16 rounded-3xl border border-purple-500/40 shadow-purple-glow">
-      <h2 class="text-4xl md:text-5xl font-bold text-center mb-10 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-        About Geveex Devnet
-      </h2>
-      <p class="text-lg md:text-xl text-gray-200 leading-relaxed text-center">
-        A free, devnet-only NFT on Solana Devnet for safe onboarding and wallet discovery. Minted via audited Metaplex programs, limited to 1 per wallet, with no financial value and no future promises. Used only to track participation and build eligibility.
-      </p>
+  <section class="relative -mt-20 md:-mt-24 pb-12 px-4 text-center z-10">
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-purple-400 drop-shadow-[0_0_15px_rgba(0,240,255,0.3)] tracking-tight">
+      Claim Your Early Bird NFT
+    </h1>
+    <p class="mt-4 text-gray-400 text-lg md:text-xl font-medium">Join the Geveex Ecosystem • Exclusive Devnet Badge</p>
+  </section>
+
+  <section class="py-12 px-4">
+    <div class="max-w-5xl mx-auto glass p-8 md:p-12 shadow-2xl shadow-purple-900/10">
+      <div class="flex flex-col md:flex-row items-center gap-10">
+        <div class="md:w-1/3 flex justify-center">
+            <div class="relative w-32 h-32 md:w-40 md:h-40">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/logo.png" class="relative w-full h-full rounded-full border-4 border-white/10" alt="Logo">
+            </div>
+        </div>
+        <div class="md:w-2/3 text-center md:text-left">
+            <h2 class="text-3xl font-bold mb-4 text-white">About Geveex Devnet</h2>
+            <p class="text-gray-300 leading-relaxed">
+                This is a <span class="text-cyan-400 font-semibold">free, devnet-only NFT</span> on Solana. It serves as a proof of participation for early adopters. Minted via audited Metaplex programs.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-4 justify-center md:justify-start">
+                <span class="bg-indigo-500/20 text-indigo-300 px-4 py-1 rounded-full text-sm border border-indigo-500/30">Devnet Only</span>
+                <span class="bg-purple-500/20 text-purple-300 px-4 py-1 rounded-full text-sm border border-purple-500/30">1 Per Wallet</span>
+                <span class="bg-cyan-500/20 text-cyan-300 px-4 py-1 rounded-full text-sm border border-cyan-500/30">Soulbound Concept</span>
+            </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Devnet SOL Faucet -->
-  <section class="py-16 bg-gradient-to-r from-indigo-950/80 to-purple-950/80">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <div class="glass p-10 rounded-3xl border border-cyan-500/40 shadow-neon-glow">
-        <h3 class="text-3xl font-bold mb-6 text-cyan-300">Need Devnet SOL?</h3>
-        <p class="text-gray-300 mb-8">Free SOL needed to sign transactions on devnet</p>
+  <section class="py-6">
+    <div class="max-w-2xl mx-auto px-4">
+      <div class="bg-gradient-to-r from-blue-900/40 to-cyan-900/40 border border-cyan-500/30 rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-center md:text-left">
+            <h3 class="text-lg font-bold text-cyan-200">Insufficient Devnet SOL?</h3>
+            <p class="text-sm text-cyan-100/70">You need Devnet SOL to pay for gas fees.</p>
+        </div>
         <a href="https://faucet.solana.com" target="_blank" 
-           class="inline-block bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white px-10 py-5 rounded-xl font-bold text-lg shadow-lg transform hover:scale-105 transition">
-          Get Free Devnet SOL → Official Faucet
+           class="whitespace-nowrap bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/50 px-6 py-2 rounded-lg font-semibold transition">
+          Get SOL Faucet
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Tasks Section - Centered Professional -->
-  <section class="py-20 px-4">
-    <h2 class="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-indigo-300 to-cyan-300 bg-clip-text text-transparent">
-      Complete All Tasks to Unlock Claim
-    </h2>
-    <div class="max-w-4xl mx-auto space-y-8">
-      <div class="glass p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:border-cyan-400/70 transition">
-        <span class="text-xl font-medium">Follow Official X</span>
-        <div class="flex gap-4">
-          <button onclick="window.open('https://x.com/Geveex_echo','_blank')" class="bg-gray-800/70 hover:bg-gray-700 px-6 py-3 rounded-lg transition">Open Link</button>
-          <button onclick="document.getElementById('task1').textContent='Verified ✓'" class="bg-green-700/80 hover:bg-green-600 px-6 py-3 rounded-lg transition">Verify</button>
-          <span id="task1" class="text-green-400 font-bold text-xl self-center"></span>
+  <section class="py-16 px-4">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Complete Tasks</h2>
+        <p class="text-gray-500 mt-2">Finish all steps below to unlock the mint button</p>
+    </div>
+
+    <div class="max-w-3xl mx-auto space-y-5">
+      
+      <div class="glass p-5 rounded-2xl flex items-center justify-between hover:border-cyan-500/30 transition-colors group">
+        <div class="flex items-center gap-4">
+            <div class="bg-gray-800 p-3 rounded-lg text-white group-hover:text-cyan-400 transition">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>
+            </div>
+            <span class="text-lg font-medium text-gray-200">Follow Official X</span>
         </div>
+        <button id="btn-task-1" onclick="handleTask('btn-task-1', 'https://x.com/Geveex_echo')" 
+                data-state="open" 
+                class="min-w-[140px] px-5 py-2.5 rounded-lg font-bold text-sm bg-gray-700 hover:bg-gray-600 text-white transition-all duration-200 shadow-lg">
+          Open Link
+        </button>
       </div>
 
-      <div class="glass p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:border-purple-400/70 transition">
-        <span class="text-xl font-medium">Follow Dev X</span>
-        <div class="flex gap-4">
-          <button onclick="window.open('https://x.com/0xlmamun','_blank')" class="bg-gray-800/70 hover:bg-gray-700 px-6 py-3 rounded-lg transition">Open Link</button>
-          <button onclick="document.getElementById('task2').textContent='Verified ✓'" class="bg-green-700/80 hover:bg-green-600 px-6 py-3 rounded-lg transition">Verify</button>
-          <span id="task2" class="text-green-400 font-bold text-xl self-center"></span>
+      <div class="glass p-5 rounded-2xl flex items-center justify-between hover:border-purple-500/30 transition-colors group">
+        <div class="flex items-center gap-4">
+            <div class="bg-gray-800 p-3 rounded-lg text-white group-hover:text-purple-400 transition">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z"/></svg>
+            </div>
+            <span class="text-lg font-medium text-gray-200">Follow Dev X</span>
         </div>
+        <button id="btn-task-2" onclick="handleTask('btn-task-2', 'https://x.com/0xlmamun')" 
+                data-state="open" 
+                class="min-w-[140px] px-5 py-2.5 rounded-lg font-bold text-sm bg-gray-700 hover:bg-gray-600 text-white transition-all duration-200 shadow-lg">
+          Open Link
+        </button>
       </div>
 
-      <div class="glass p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-400/70 transition">
-        <span class="text-xl font-medium">Join Telegram Channel</span>
-        <div class="flex gap-4">
-          <button onclick="window.open('https://t.me/Geveex_echo','_blank')" class="bg-gray-800/70 hover:bg-gray-700 px-6 py-3 rounded-lg transition">Join Channel</button>
-          <button onclick="document.getElementById('task3').textContent='Verified ✓'" class="bg-green-700/80 hover:bg-green-600 px-6 py-3 rounded-lg transition">Verify</button>
-          <span id="task3" class="text-green-400 font-bold text-xl self-center"></span>
+      <div class="glass p-5 rounded-2xl flex items-center justify-between hover:border-blue-500/30 transition-colors group">
+        <div class="flex items-center gap-4">
+            <div class="bg-gray-800 p-3 rounded-lg text-white group-hover:text-blue-400 transition">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.694 0V0h.694zm5.8 8.636c-.1.972-.756 6.64-1.076 8.084-.136.616-.48.772-.8.8-.704.06-1.236-.464-1.916-.908-1.064-.696-1.668-1.128-2.704-1.812-1.2-.792-.424-1.228.264-1.94l.016-.016c.452-.58 2.276-2.908 2.316-3.156.004-.028.008-.132-.048-.188-.056-.056-.14-.036-.2-.024-.084.016-1.424.908-4.024 2.664-.38.26-.724.388-1.032.38-.34-.008-.992-.192-1.476-.352-.596-.192-1.068-.292-1.028-.616.02-.172.26-.348.684-.528 2.676-1.164 4.46-1.932 5.344-2.3 2.528-1.052 3.056-1.236 3.4-1.236.076 0 .248.016.36.108.096.08.12.188.132.264.016.124.032.284.02.436z"/></svg>
+            </div>
+            <span class="text-lg font-medium text-gray-200">Join Channel</span>
         </div>
+        <button id="btn-task-3" onclick="handleTask('btn-task-3', 'https://t.me/Geveex_echo')" 
+                data-state="open" 
+                class="min-w-[140px] px-5 py-2.5 rounded-lg font-bold text-sm bg-gray-700 hover:bg-gray-600 text-white transition-all duration-200 shadow-lg">
+          Open Link
+        </button>
       </div>
 
-      <div class="glass p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:border-violet-400/70 transition">
-        <span class="text-xl font-medium">Join Telegram Group</span>
-        <div class="flex gap-4">
-          <button onclick="window.open('https://t.me/GeveexUniverse','_blank')" class="bg-gray-800/70 hover:bg-gray-700 px-6 py-3 rounded-lg transition">Join Group</button>
-          <button onclick="document.getElementById('task4').textContent='Verified ✓'" class="bg-green-700/80 hover:bg-green-600 px-6 py-3 rounded-lg transition">Verify</button>
-          <span id="task4" class="text-green-400 font-bold text-xl self-center"></span>
+      <div class="glass p-5 rounded-2xl flex items-center justify-between hover:border-indigo-500/30 transition-colors group">
+        <div class="flex items-center gap-4">
+            <div class="bg-gray-800 p-3 rounded-lg text-white group-hover:text-indigo-400 transition">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.694 0V0h.694zm5.8 8.636c-.1.972-.756 6.64-1.076 8.084-.136.616-.48.772-.8.8-.704.06-1.236-.464-1.916-.908-1.064-.696-1.668-1.128-2.704-1.812-1.2-.792-.424-1.228.264-1.94l.016-.016c.452-.58 2.276-2.908 2.316-3.156.004-.028.008-.132-.048-.188-.056-.056-.14-.036-.2-.024-.084.016-1.424.908-4.024 2.664-.38.26-.724.388-1.032.38-.34-.008-.992-.192-1.476-.352-.596-.192-1.068-.292-1.028-.616.02-.172.26-.348.684-.528 2.676-1.164 4.46-1.932 5.344-2.3 2.528-1.052 3.056-1.236 3.4-1.236.076 0 .248.016.36.108.096.08.12.188.132.264.016.124.032.284.02.436z"/></svg>
+            </div>
+            <span class="text-lg font-medium text-gray-200">Join Group</span>
         </div>
+        <button id="btn-task-4" onclick="handleTask('btn-task-4', 'https://t.me/GeveexUniverse')" 
+                data-state="open" 
+                class="min-w-[140px] px-5 py-2.5 rounded-lg font-bold text-sm bg-gray-700 hover:bg-gray-600 text-white transition-all duration-200 shadow-lg">
+          Open Link
+        </button>
       </div>
 
-      <div class="glass p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:border-cyan-400/70 transition">
-        <span class="text-xl font-medium">Follow GitHub</span>
-        <div class="flex gap-4">
-          <button onclick="window.open('https://github.com/GeveexEcho','_blank')" class="bg-gray-800/70 hover:bg-gray-700 px-6 py-3 rounded-lg transition">Open GitHub</button>
-          <button onclick="document.getElementById('task5').textContent='Verified ✓'" class="bg-green-700/80 hover:bg-green-600 px-6 py-3 rounded-lg transition">Verify</button>
-          <span id="task5" class="text-green-400 font-bold text-xl self-center"></span>
+      <div class="glass p-5 rounded-2xl flex items-center justify-between hover:border-gray-400/30 transition-colors group">
+        <div class="flex items-center gap-4">
+            <div class="bg-gray-800 p-3 rounded-lg text-white group-hover:text-gray-300 transition">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.005.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <span class="text-lg font-medium text-gray-200">Follow GitHub</span>
         </div>
+        <button id="btn-task-5" onclick="handleTask('btn-task-5', 'https://github.com/GeveexEcho')" 
+                data-state="open" 
+                class="min-w-[140px] px-5 py-2.5 rounded-lg font-bold text-sm bg-gray-700 hover:bg-gray-600 text-white transition-all duration-200 shadow-lg">
+          Open Link
+        </button>
       </div>
+
     </div>
   </section>
 
-  <!-- Claim Button -->
-  <div class="text-center py-20">
+  <div class="text-center py-20 bg-gradient-to-t from-indigo-950/20 to-transparent">
     <button id="claim-button" disabled 
-            class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 
-                   text-white px-16 py-8 rounded-full font-extrabold text-2xl shadow-[0_0_60px_rgba(99,102,241,0.8)] transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:scale-100 disabled:shadow-none">
-      Claim Your Unique NFT
+            class="group relative inline-flex items-center justify-center bg-gray-800 text-gray-500 px-16 py-6 rounded-full font-extrabold text-2xl transition-all duration-500 disabled:cursor-not-allowed">
+      <div id="claim-glow" class="absolute -inset-1 bg-gradient-to-r from-neon via-purple-500 to-pink-500 rounded-full blur opacity-0 transition duration-500"></div>
+      <span class="relative flex items-center gap-3">
+        <span id="claim-text">Locked</span>
+        <svg id="claim-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+      </span>
     </button>
-    <div id="status" class="mt-8 text-xl font-medium text-red-400"></div>
+    <p class="mt-4 text-gray-500 text-sm" id="status-msg">Complete tasks & connect wallet to claim</p>
+    <div id="status" class="mt-4 text-xl font-medium"></div>
   </div>
 
+  <footer class="py-8 text-center text-gray-600 text-sm border-t border-white/5">
+    &copy; 2024 Geveex Universe. Devnet Environment.
+  </footer>
+
   <script src="script.js"></script>
+
+  <script>
+    // Variables to track state
+    let walletConnected = false;
+    let tasksCompleted = 0;
+    const totalTasks = 5;
+
+    // --- Task Button Logic ---
+    function handleTask(btnId, link) {
+        const btn = document.getElementById(btnId);
+        const state = btn.getAttribute('data-state');
+
+        if (state === 'open') {
+            // Step 1: User clicks Open Link
+            window.open(link, '_blank');
+            
+            // Change button to "Verify" state
+            btn.setAttribute('data-state', 'verify');
+            btn.textContent = 'Verify';
+            
+            // Styling for Verify state (Orange/Yellow attention color)
+            btn.className = "min-w-[140px] px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white transition-all duration-200 shadow-lg animate-pulse";
+            
+        } else if (state === 'verify') {
+            // Step 2: User clicks Verify
+            // Simulate API check or immediate success
+            btn.setAttribute('data-state', 'verified');
+            btn.innerHTML = 'Verified &check;';
+            btn.disabled = true;
+
+            // Styling for Verified state (Green success color)
+            btn.className = "min-w-[140px] px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-emerald-600 to-green-600 text-white cursor-default shadow-neon-glow";
+            
+            // Update Progress
+            tasksCompleted++;
+            checkEligibility();
+        }
+    }
+
+    // --- Wallet Connection Logic (Generic Provider) ---
+    async function connectWallet() {
+        const btn = document.getElementById('connect-wallet-btn');
+        const btnText = document.getElementById('wallet-text');
+        
+        try {
+            // Check for Solana object (Phantom, Solflare, Backpack all inject this)
+            const provider = window.solana || window.solflare;
+
+            if (!provider) {
+                // If on mobile and not in-app browser, redirect logic could go here
+                // For now, alert user to use a compatible browser
+                alert("Solana wallet not found! Please open this in Phantom or Solflare app.");
+                return;
+            }
+
+            // Attempt connection
+            btnText.textContent = "Connecting...";
+            const resp = await provider.connect();
+            const pubKey = resp.publicKey.toString();
+
+            // Success State
+            walletConnected = true;
+            const shortKey = pubKey.slice(0, 4) + '...' + pubKey.slice(-4);
+            
+            btnText.textContent = shortKey;
+            
+            // Visual update for connected button
+            btn.classList.remove('from-indigo-600', 'to-purple-600');
+            btn.classList.add('from-cyan-600', 'to-blue-600', 'border', 'border-cyan-400');
+            
+            checkEligibility();
+
+        } catch (err) {
+            console.error("Connection failed", err);
+            btnText.textContent = "Connect Wallet";
+            alert("Connection rejected or failed.");
+        }
+    }
+
+    // --- Eligibility Check (Enable Claim) ---
+    function checkEligibility() {
+        const claimBtn = document.getElementById('claim-button');
+        const claimText = document.getElementById('claim-text');
+        const claimGlow = document.getElementById('claim-glow');
+        const statusMsg = document.getElementById('status-msg');
+        const claimIcon = document.getElementById('claim-icon');
+
+        if (walletConnected && tasksCompleted === totalTasks) {
+            claimBtn.disabled = false;
+            claimBtn.classList.remove('bg-gray-800', 'text-gray-500');
+            claimBtn.classList.add('bg-transparent', 'text-white', 'hover:scale-105');
+            
+            claimText.textContent = "CLAIM NFT";
+            statusMsg.textContent = "You are eligible! Click to mint.";
+            statusMsg.classList.add('text-cyan-400');
+            
+            // Reveal Glow
+            claimGlow.classList.remove('opacity-0');
+            claimGlow.classList.add('opacity-100');
+            
+            // Change Icon to unlock
+            claimIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>';
+        }
+    }
+  </script>
 </body>
-          </html>
+</html>
