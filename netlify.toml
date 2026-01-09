@@ -1,0 +1,8 @@
+[build]
+  command = ""          # No build command needed for static HTML
+  publish = "."         # Publish the root directory
+
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
