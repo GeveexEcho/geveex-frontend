@@ -1,4 +1,14 @@
 {
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    }
+  ]
+}
+{
   "rewrites": [
     {
       "source": "/api/claim",
