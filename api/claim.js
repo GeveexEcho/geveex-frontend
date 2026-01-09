@@ -5,17 +5,13 @@ import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/s
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { pubkey: userPubkeyStr } = req.body;
+  const { pubkey: userPubkeyStr } = req.body || {};
   if (!userPubkeyStr) {
     return res.status(400).json({ error: 'Missing pubkey' });
   }
-
-  // Note: Vercel doesn't have built-in Netlify KV. 
-  // This logic remains as a placeholder or you can connect Upstash Redis/Vercel KV here.
-  // For now, continuing with the rest of your minting logic.
 
   const secret = process.env.WALLET_SECRET;
   if (!secret) {
@@ -95,11 +91,17 @@ export default async function handler(req, res) {
       )
     );
 
-    tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    tx.recentBlockhash = blockhash;
     tx.feePayer = payer.publicKey;
 
     const signature = await connection.sendTransaction(tx, [payer]);
-    await connection.confirmTransaction(signature, "confirmed");
+    
+    await connection.confirmTransaction({
+        signature,
+        blockhash,
+        lastValidBlockHeight
+    }, "confirmed");
 
     return res.status(200).json({ 
       success: true, 
@@ -107,7 +109,10 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ 
+      success: false, 
+      error: err.message 
+    });
   }
-}
+          }
+      
