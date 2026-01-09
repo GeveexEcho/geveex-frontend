@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Portal - Claimed Wallets</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f8f9fa; }
+    #status { color: red; font-weight: bold; margin: 20px 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    th { background: #007bff; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Admin Portal - Claimed Wallets List</h1>
+  <button id="connect-admin">Connect Admin Wallet</button>
+  <div id="status"></div>
+  <div id="admin-content" style="display:none;">
+    <p>Total Claimed: <span id="total">Loading...</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Wallet Pubkey</th>
+          <th>Minted NFT Mint Address</th>
+          <th>Claim Time (approx)</th>
+        </tr>
+      </thead>
+      <tbody id="claimed-list"></tbody>
+    </table>
+    <p>Note: This is a placeholder list. In production, integrate with Netlify KV or external DB to fetch real data.</p>
+  </div>
+
+  <script>
+    const ADMIN_WALLET = "PWTPrTgMX2WM1gbsFSib7RrYiXPEvVR6t13n1zWht4G";
+
+    document.getElementById('connect-admin').onclick = async () => {
+      if ('solana' in window) {
+        const wallet = window.solana;
+        await wallet.connect();
+        const pubkey = wallet.publicKey.toBase58();
+        const status = document.getElementById('status');
+
+        if (pubkey === ADMIN_WALLET) {
+          status.textContent = 'Admin access granted!';
+          document.getElementById('admin-content').style.display = 'block';
+          document.getElementById('connect-admin').style.display = 'none';
+          // Here fetch real data from backend function if implemented
+          document.getElementById('total').textContent = '200k max - Current: Loading from KV...';
+          // Populate table with dummy or real data
+          const list = document.getElementById('claimed-list');
+          list.innerHTML = '<tr><td>ExampleWallet123...</td><td>MintAddrXYZ...</td><td>2026-01-09</td></tr>'; // Placeholder
+        } else {
+          status.textContent = 'Admin access denied: Only specific wallet allowed';
+        }
+      } else {
+        alert('Install Phantom wallet!');
+      }
+    };
+  </script>
+</body>
+</html>
