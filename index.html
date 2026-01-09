@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geveex Echo - Claim Early Bird NFT</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="left">
+      <a href="https://x.com/Geveex_echo" target="_blank"><img src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" width="32"/></a>
+      <a href="https://x.com/0xlmamun" target="_blank"><img src="https://img.icons8.com/color/48/twitterx--v1.png" alt="Dev X" width="32"/></a>
+      <a href="https://t.me/Geveex_echo" target="_blank"><img src="https://img.icons8.com/color/48/telegram-app.png" alt="Telegram Channel" width="32"/></a>
+      <a href="https://t.me/GeveexUniverse" target="_blank"><img src="https://img.icons8.com/color/48/telegram-app.png" alt="Telegram Group" width="32"/></a>
+      <a href="https://github.com/GeveexEcho" target="_blank"><img src="https://img.icons8.com/material-outlined/48/github.png" alt="GitHub" width="32"/></a>
+    </div>
+    <div class="middle">
+      <a href="https://explorer.solana.com/address/BrD94HQqSdY69azodByzaA85JcXw1jHSQzh6ujJn6sG5?cluster=devnet" target="_blank">NFT Explorer</a>
+    </div>
+    <div class="right">
+      <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/logo.png" alt="Geveex Echo Logo" width="40"/>
+      <span>Geveex Echo</span>
+      <button id="connect-wallet">Connect Wallet</button>
+    </div>
+  </header>
+
+  <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/banner.png" alt="Banner" class="banner"/>
+
+  <section class="about">
+    <h2>About Geveex Devnet</h2>
+    <p><strong>WHY DEVNET:</strong> Free onboarding, No financial risk, Wallet discovery, Social graph building. MODULE: Devnet NFT</p>
+    <p><strong>DETAILS:</strong><br>
+      Chain: Solana Devnet (publicly verifiable)<br>
+      Mint cost: 0<br>
+      Max mint per wallet: 1<br>
+      Supply target: ~200,000<br>
+      Metadata MUST say: "TESTNET ONLY – NO MAINNET VALUE"
+    </p>
+    <p><strong>IMPORTANT:</strong><br>
+      Devnet NFT minted via audited Metaplex programs<br>
+      This NFT acts as a participation filter, NOT a financial asset<br>
+      This NFT will NEVER be bridged<br>
+      This NFT will NEVER be promised value
+    </p>
+    <p><strong>PURPOSE:</strong> Identify real wallets, Track participation, Create eligibility base</p>
+    <p><strong>FAILURE MODES:</strong> Bots → acceptable, Fake wallets → filtered later, Zero expectations → intentional</p>
+  </section>
+
+  <section class="tasks">
+    <h2>Complete Tasks to Unlock Claim</h2>
+    <div class="task-item">
+      <button onclick="window.open('https://x.com/Geveex_echo','_blank')">Follow Official X</button>
+      <button onclick="document.getElementById('task1').textContent='Verified'">Verify</button>
+      <span id="task1"></span>
+    </div>
+    <div class="task-item">
+      <button onclick="window.open('https://x.com/0xlmamun','_blank')">Follow Dev X</button>
+      <button onclick="document.getElementById('task2').textContent='Verified'">Verify</button>
+      <span id="task2"></span>
+    </div>
+    <div class="task-item">
+      <button onclick="window.open('https://t.me/Geveex_echo','_blank')">Join Telegram Channel</button>
+      <button onclick="document.getElementById('task3').textContent='Verified'">Verify</button>
+      <span id="task3"></span>
+    </div>
+    <div class="task-item">
+      <button onclick="window.open('https://t.me/GeveexUniverse','_blank')">Join Telegram Group</button>
+      <button onclick="document.getElementById('task4').textContent='Verified'">Verify</button>
+      <span id="task4"></span>
+    </div>
+    <div class="task-item">
+      <button onclick="window.open('https://github.com/GeveexEcho','_blank')">Follow GitHub</button>
+      <button onclick="document.getElementById('task5').textContent='Verified'">Verify</button>
+      <span id="task5"></span>
+    </div>
+  </section>
+
+  <button id="claim-button" disabled>Claim NFT</button>
+  <div id="status" style="text-align:center; margin:20px; color:#d32f2f; font-weight:bold;"></div>
+
+  <section id="user-claimed" style="display:none; text-align:center;">
+    <h2>Your Claimed NFT</h2>
+    <p id="claimed-info"></p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
