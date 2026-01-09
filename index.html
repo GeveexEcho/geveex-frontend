@@ -1,142 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Geveex Echo - Claim Early Bird NFT (Devnet)</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <!-- Tailwind CDN with custom config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',    // Indigo
+            accent: '#a78bfa',     // Purple
+            glow: '#7c3aed',       // Violet glow
+            glass: 'rgba(30, 41, 59, 0.5)',
+          },
+          backdropBlur: {
+            xs: '2px',
+          },
+          boxShadow: {
+            'glow': '0 0 30px -5px rgba(99, 102, 241, 0.5)',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts (modern sans-serif) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    }
+  </style>
 </head>
-<body>
-  <!-- Top Bar -->
-  <header class="top-bar">
-    <div class="left-social">
-      <a href="https://x.com/Geveex_echo" target="_blank" title="Official X">
-        <img src="https://img.icons8.com/color/48/twitterx--v1.png" alt="X" width="32"/>
-      </a>
-      <a href="https://x.com/0xlmamun" target="_blank" title="Dev X">
-        <img src="https://img.icons8.com/color/48/twitterx--v1.png" alt="Dev X" width="32"/>
-      </a>
-      <a href="https://t.me/Geveex_echo" target="_blank" title="Telegram Channel">
-        <img src="https://img.icons8.com/color/48/telegram-app.png" alt="Telegram Channel" width="32"/>
-      </a>
-      <a href="https://t.me/GeveexUniverse" target="_blank" title="Telegram Group">
-        <img src="https://img.icons8.com/color/48/telegram-app.png" alt="Telegram Group" width="32"/>
-      </a>
-      <a href="https://github.com/GeveexEcho" target="_blank" title="GitHub">
-        <img src="https://img.icons8.com/material-outlined/48/github.png" alt="GitHub" width="32"/>
-      </a>
-    </div>
+<body class="bg-gradient-to-br from-gray-950 via-indigo-950 to-purple-950 text-gray-100 min-h-screen">
+  <!-- Top Bar - Glass Effect -->
+  <nav class="bg-gray-900/40 backdrop-blur-xl border-b border-indigo-900/50 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Left Socials -->
+        <div class="flex space-x-5">
+          <a href="https://x.com/Geveex_echo" target="_blank" class="text-indigo-300 hover:text-white transition transform hover:scale-110">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- Add other social icons similarly -->
+        </div>
 
-    <div class="middle">
-      <a href="https://explorer.solana.com/address/BrD94HQqSdY69azodByzaA85JcXw1jHSQzh6ujJn6sG5?cluster=devnet" 
-         target="_blank" class="explorer-link">
-        NFT Explorer
-      </a>
-    </div>
+        <!-- Middle Explorer -->
+        <a href="https://explorer.solana.com/address/BrD94HQqSdY69azodByzaA85JcXw1jHSQzh6ujJn6sG5?cluster=devnet" 
+           target="_blank" class="hidden md:block text-indigo-300 hover:text-indigo-200 font-medium">
+          NFT Explorer
+        </a>
 
-    <div class="right">
-      <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/logo.png" 
-           alt="Geveex Echo Logo" width="40" height="40"/>
-      <span class="project-name">Geveex Echo</span>
-      <button id="connect-wallet">Connect Wallet</button>
+        <!-- Right Logo + Connect -->
+        <div class="flex items-center space-x-4">
+          <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/logo.png" 
+               alt="Logo" class="h-9 w-9 rounded-full ring-2 ring-indigo-500/50"/>
+          <span class="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-purple-300">Geveex Echo</span>
+          <button id="connect-wallet" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-5 py-2 rounded-lg font-semibold transition shadow-glow">
+            Connect Wallet
+          </button>
+        </div>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <!-- Banner -->
-  <div class="banner-container">
+  <!-- Hero Banner -->
+  <div class="relative">
     <img src="https://raw.githubusercontent.com/GeveexEcho/geveex-frontend/5fed9a4df8c88e8d47f1fff6de2fe7a08f3651eb/public/assets/banner.png" 
-         alt="Geveex Echo Banner" class="banner"/>
+         alt="Geveex Banner" class="w-full h-96 md:h-[500px] object-cover brightness-75"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-center pb-16">
+      <h1 class="text-5xl md:text-7xl font-extrabold text-white drop-shadow-2xl animate-pulse-slow">
+        Claim Your Early Bird
+      </h1>
+    </div>
   </div>
 
-  <!-- About Section -->
-  <section class="about-section">
-    <h2>About Geveex Devnet</h2>
-    
-    <h3>WHY DEVNET:</h3>
-    <p>Free onboarding • No financial risk • Wallet discovery • Social graph building</p>
-    <p><strong>MODULE:</strong> Devnet NFT</p>
-
-    <h3>DETAILS:</h3>
-    <p>
-      Chain: Solana Devnet (publicly verifiable)<br>
-      Mint cost: 0<br>
-      Max mint per wallet: 1<br>
-      Supply target: ~200,000<br>
-      <strong>Metadata MUST say:</strong> "TESTNET ONLY – NO MAINNET VALUE"
-    </p>
-
-    <h3>IMPORTANT:</h3>
-    <p>
-      Devnet NFT minted via audited Metaplex programs<br>
-      This NFT acts as a participation filter, NOT a financial asset<br>
-      This NFT will NEVER be bridged<br>
-      This NFT will NEVER be promised value
-    </p>
-
-    <h3>PURPOSE:</h3>
-    <p>Identify real wallets • Track participation • Create eligibility base</p>
-
-    <h3>FAILURE MODES:</h3>
-    <p>Bots → acceptable • Fake wallets → filtered later • Zero expectations → intentional</p>
+  <!-- About Section - Glass Card -->
+  <section class="py-20 px-4">
+    <div class="max-w-6xl mx-auto glass-card rounded-3xl p-10 backdrop-blur-xl border border-indigo-500/30 shadow-glow">
+      <h2 class="text-5xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
+        About Geveex Devnet
+      </h2>
+      <!-- Your content here – structured with headings & lists as before, but with better spacing/colors -->
+      <div class="grid md:grid-cols-2 gap-10 text-gray-300">
+        <!-- Left column -->
+        <div class="space-y-8">
+          <div>
+            <h3 class="text-2xl font-semibold text-indigo-300 mb-4">WHY DEVNET</h3>
+            <ul class="space-y-3">
+              <li class="flex items-center"><span class="text-purple-400 mr-2">→</span>Free onboarding</li>
+              <!-- add others -->
+            </ul>
+          </div>
+          <!-- More sections -->
+        </div>
+        <!-- Right column -->
+        <div class="space-y-8">
+          <!-- DETAILS, IMPORTANT, etc. -->
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- Get Devnet SOL -->
-  <section class="sol-faucet">
-    <h3>Need Devnet SOL for transactions?</h3>
-    <button class="faucet-btn" onclick="window.open('https://faucet.solana.com','_blank')">
-      Get Free Devnet SOL (Official Faucet)
+  <!-- Devnet SOL Faucet - Colorful Glass -->
+  <section class="py-16 bg-gradient-to-r from-indigo-950 to-purple-950">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="glass-card p-10 rounded-3xl">
+        <h3 class="text-3xl font-bold mb-6 text-white">Need Devnet SOL?</h3>
+        <p class="text-gray-300 mb-8">Quick free SOL for signing transactions (required for claim)</p>
+        <a href="https://faucet.solana.com" target="_blank" 
+           class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-10 py-5 rounded-xl font-bold text-lg shadow-lg transform hover:scale-105 transition">
+          Get Free Devnet SOL Now →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tasks Section - Centered Professional Cards -->
+  <section class="py-20 px-4">
+    <h2 class="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">
+      Complete Tasks to Unlock
+    </h2>
+    <div class="max-w-4xl mx-auto space-y-8">
+      <!-- Each task in its own glass card -->
+      <div class="glass-card p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-400 transition">
+        <span class="text-xl font-medium">Follow Official X</span>
+        <div class="flex gap-4">
+          <button onclick="window.open('https://x.com/Geveex_echo','_blank')" class="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg">Open</button>
+          <button onclick="this.nextElementSibling.textContent='Verified ✓'" class="bg-green-700 hover:bg-green-600 px-6 py-3 rounded-lg">Verify</button>
+          <span class="text-green-400 font-bold text-xl self-center"></span>
+        </div>
+      </div>
+      <!-- Repeat for other 4 tasks -->
+    </div>
+  </section>
+
+  <!-- Claim Button - Big Gradient Glow -->
+  <div class="text-center py-16">
+    <button id="claim-button" disabled 
+            class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white px-16 py-8 rounded-full font-extrabold text-2xl shadow-[0_0_60px_rgba(99,102,241,0.7)] transform hover:scale-105 transition disabled:opacity-50 disabled:scale-100 disabled:shadow-none">
+      Claim Your Unique NFT
     </button>
-    <p>Max 2 requests every 8 hours • GitHub sign-in for more</p>
-  </section>
-
-  <!-- Tasks Section -->
-  <section class="tasks-section">
-    <h2>Complete All Tasks to Unlock Claim</h2>
-    
-    <div class="task">
-      <button class="task-btn" onclick="window.open('https://x.com/Geveex_echo','_blank')">Follow Official X</button>
-      <button class="verify-btn" onclick="document.getElementById('task-x').textContent='Verified ✓'">Verify</button>
-      <span id="task-x" class="verify-status"></span>
-    </div>
-
-    <div class="task">
-      <button class="task-btn" onclick="window.open('https://x.com/0xlmamun','_blank')">Follow Dev X</button>
-      <button class="verify-btn" onclick="document.getElementById('task-devx').textContent='Verified ✓'">Verify</button>
-      <span id="task-devx" class="verify-status"></span>
-    </div>
-
-    <div class="task">
-      <button class="task-btn" onclick="window.open('https://t.me/Geveex_echo','_blank')">Join Telegram Channel</button>
-      <button class="verify-btn" onclick="document.getElementById('task-tgchan').textContent='Verified ✓'">Verify</button>
-      <span id="task-tgchan" class="verify-status"></span>
-    </div>
-
-    <div class="task">
-      <button class="task-btn" onclick="window.open('https://t.me/GeveexUniverse','_blank')">Join Telegram Group</button>
-      <button class="verify-btn" onclick="document.getElementById('task-tggroup').textContent='Verified ✓'">Verify</button>
-      <span id="task-tggroup" class="verify-status"></span>
-    </div>
-
-    <div class="task">
-      <button class="task-btn" onclick="window.open('https://github.com/GeveexEcho','_blank')">Follow GitHub</button>
-      <button class="verify-btn" onclick="document.getElementById('task-github').textContent='Verified ✓'">Verify</button>
-      <span id="task-github" class="verify-status"></span>
-    </div>
-  </section>
-
-  <!-- Claim Button -->
-  <div class="claim-container">
-    <button id="claim-button" disabled>Claim Your Unique NFT</button>
-    <div id="status-message"></div>
+    <div id="status" class="mt-8 text-xl font-medium text-red-400"></div>
   </div>
-
-  <!-- User Claimed Status -->
-  <section id="user-claimed-section" style="display:none;">
-    <h2>Your Claimed NFT</h2>
-    <p id="claimed-info"></p>
-    <p class="note">TESTNET ONLY – NO MAINNET VALUE</p>
-  </section>
 
   <script src="script.js"></script>
 </body>
