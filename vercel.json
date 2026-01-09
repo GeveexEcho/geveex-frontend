@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/claim",
+      "destination": "/api/claim.js"
+    }
+  ]
+}
