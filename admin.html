@@ -2,61 +2,140 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Portal - Claimed Wallets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geveex Admin Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { glass: 'rgba(15, 23, 42, 0.8)', neon: '#00f0ff' }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f8f9fa; }
-    #status { color: red; font-weight: bold; margin: 20px 0; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-    th { background: #007bff; color: white; }
+    body { background: #050505; font-family: 'Inter', sans-serif; color: white; }
+    .glass { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
   </style>
 </head>
 <body>
-  <h1>Admin Portal - Claimed Wallets List</h1>
-  <button id="connect-admin">Connect Admin Wallet</button>
-  <div id="status"></div>
-  <div id="admin-content" style="display:none;">
-    <p>Total Claimed: <span id="total">Loading...</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Wallet Pubkey</th>
-          <th>Minted NFT Mint Address</th>
-          <th>Claim Time (approx)</th>
-        </tr>
-      </thead>
-      <tbody id="claimed-list"></tbody>
-    </table>
-    <p>Note: This is a placeholder list. In production, integrate with Netlify KV or external DB to fetch real data.</p>
+
+  <div id="login-screen" class="flex items-center justify-center min-h-screen">
+    <div class="glass p-10 rounded-3xl max-w-md w-full text-center">
+      <div class="w-16 h-16 bg-indigo-600/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-indigo-500/50">
+        <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+      </div>
+      <h1 class="text-2xl font-bold mb-2">Geveex Admin</h1>
+      <p class="text-gray-400 text-sm mb-8">Connect authorized wallet to enter</p>
+      <button id="admin-connect-btn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-bold hover:scale-[1.02] transition-transform shadow-lg shadow-indigo-500/20">
+        Connect Admin Wallet
+      </button>
+      <p id="err-msg" class="mt-4 text-red-500 text-xs font-medium"></p>
+    </div>
+  </div>
+
+  <div id="dashboard" class="hidden min-h-screen p-6 md:p-12">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold tracking-tight">Claimed Wallets</h1>
+            <p class="text-gray-500 text-sm">Real-time frontend minting logs</p>
+        </div>
+        <div class="flex gap-3">
+            <button onclick="location.reload()" class="px-4 py-2 glass rounded-lg text-xs hover:bg-white/5">Refresh List</button>
+            <button onclick="clearLogs()" class="px-4 py-2 border border-red-900/50 text-red-500 rounded-lg text-xs hover:bg-red-500/10">Clear All Logs</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="glass p-6 rounded-2xl border-l-4 border-cyan-500">
+            <p class="text-gray-400 text-xs uppercase font-bold tracking-widest">Total Claims</p>
+            <p id="stat-total" class="text-4xl font-black mt-1">0</p>
+        </div>
+        <div class="glass p-6 rounded-2xl border-l-4 border-purple-500">
+            <p class="text-gray-400 text-xs uppercase font-bold tracking-widest">Network</p>
+            <p class="text-2xl font-bold mt-1 text-purple-400">Solana Devnet</p>
+        </div>
+        <div class="glass p-6 rounded-2xl border-l-4 border-emerald-500">
+            <p class="text-gray-400 text-xs uppercase font-bold tracking-widest">Status</p>
+            <p class="text-2xl font-bold mt-1 text-emerald-400">Live</p>
+        </div>
+      </div>
+
+      <div class="glass rounded-3xl overflow-hidden shadow-2xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-white/5 text-gray-400 text-[10px] uppercase tracking-tighter">
+                    <tr>
+                        <th class="p-5 font-bold">#</th>
+                        <th class="p-5 font-bold">Wallet Address</th>
+                        <th class="p-5 font-bold">Mint Signature / Address</th>
+                        <th class="p-5 font-bold text-right">Date Claimed</th>
+                    </tr>
+                </thead>
+                <tbody id="data-table" class="divide-y divide-white/5"></tbody>
+            </table>
+        </div>
+        <div id="empty-state" class="hidden py-20 text-center">
+            <p class="text-gray-600">No data records found in storage.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const ADMIN_WALLET = "PWTPrTgMX2WM1gbsFSib7RrYiXPEvVR6t13n1zWht4G";
+    const AUTH_KEY = "PWTPrTgMX2WM1gbsFSib7RrYiXPEvVR6t13n1zWht4G";
 
-    document.getElementById('connect-admin').onclick = async () => {
-      if ('solana' in window) {
-        const wallet = window.solana;
-        await wallet.connect();
-        const pubkey = wallet.publicKey.toBase58();
-        const status = document.getElementById('status');
+    document.getElementById('admin-connect-btn').onclick = async () => {
+        const provider = window.solana || window.solflare;
+        if (!provider) return alert("Wallet not found!");
 
-        if (pubkey === ADMIN_WALLET) {
-          status.textContent = 'Admin access granted!';
-          document.getElementById('admin-content').style.display = 'block';
-          document.getElementById('connect-admin').style.display = 'none';
-          // Here fetch real data from backend function if implemented
-          document.getElementById('total').textContent = '200k max - Current: Loading from KV...';
-          // Populate table with dummy or real data
-          const list = document.getElementById('claimed-list');
-          list.innerHTML = '<tr><td>ExampleWallet123...</td><td>MintAddrXYZ...</td><td>2026-01-09</td></tr>'; // Placeholder
-        } else {
-          status.textContent = 'Admin access denied: Only specific wallet allowed';
-        }
-      } else {
-        alert('Install Phantom wallet!');
-      }
+        try {
+            const resp = await provider.connect();
+            if (resp.publicKey.toString() === AUTH_KEY) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                renderTable();
+            } else {
+                document.getElementById('err-msg').textContent = "Unauthorized: Admin wallet only.";
+            }
+        } catch (e) { console.error(e); }
     };
+
+    function renderTable() {
+        const claims = JSON.parse(localStorage.getItem('geveex_records') || '[]');
+        const table = document.getElementById('data-table');
+        const statTotal = document.getElementById('stat-total');
+        const empty = document.getElementById('empty-state');
+
+        table.innerHTML = "";
+        statTotal.textContent = claims.length;
+
+        if (claims.length === 0) {
+            empty.classList.remove('hidden');
+            return;
+        }
+
+        claims.forEach((item, i) => {
+            table.innerHTML += `
+                <tr class="hover:bg-white/5 transition-colors group">
+                    <td class="p-5 text-gray-600 text-xs font-bold">${i + 1}</td>
+                    <td class="p-5 font-mono text-cyan-400 text-sm tracking-tighter">${item.wallet}</td>
+                    <td class="p-5 font-mono text-purple-400 text-sm tracking-tighter">${item.mint}</td>
+                    <td class="p-5 text-right text-gray-500 text-xs">${item.time}</td>
+                </tr>
+            `;
+        });
+    }
+
+    function clearLogs() {
+        if (confirm("Delete all frontend records?")) {
+            localStorage.removeItem('geveex_records');
+            renderTable();
+        }
+    }
   </script>
 </body>
 </html>
